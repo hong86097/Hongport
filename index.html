@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sreyhong Heng — Data Science &amp; Machine Learning</title>
+<meta name="description" content="Sreyhong Heng — fourth-year Applied Mathematics & Statistics student at the Institute of Technology of Cambodia. Data analysis, machine learning and numerical methods.">
+<meta property="og:title" content="Sreyhong Heng — Data Science & Machine Learning">
+<meta property="og:description" content="Fourth-year Applied Mathematics & Statistics student. Projects in deep learning, forecasting and numerical methods.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#FFF6E5">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%236C4CF1'/><g fill='%23FFD23F'><rect x='7' y='17' width='4.5' height='8' rx='1.5'/><rect x='13.7' y='12' width='4.5' height='13' rx='1.5'/><rect x='20.5' y='7' width='4.5' height='18' rx='1.5'/></g></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --cream:#FFF6E5;
+    --ink:#1B1340;
+    --violet:#6C4CF1;
+    --violet-d:#5436D4;
+    --coral:#FF6B4A;
+    --yellow:#FFD23F;
+    --mint:#3DDBB0;
+    --pink:#FF9EC4;
+    --white:#FFFFFF;
+    --muted:#4C4570;
+    --display:'Bricolage Grotesque',system-ui,sans-serif;
+    --body:'DM Sans',system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    --b:2.5px solid var(--ink);
+    --r:22px;
+    --shadow:5px 5px 0 var(--ink);
+  }
+  html{scroll-behavior:smooth}
+  body{font-family:var(--body);background:var(--cream);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;font-size:17px}
+  h1,h2,h3{font-family:var(--display);line-height:1.02;letter-spacing:-0.03em;font-weight:800}
+  a{color:inherit;text-decoration:none}
+  button{font:inherit;color:inherit}
+  svg{display:block}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 24px}
+  :focus-visible{outline:3px solid var(--violet);outline-offset:3px;border-radius:8px}
+
+  /* ---------- Nav ---------- */
+  .nav{position:sticky;top:14px;z-index:50;margin:14px auto 0;max-width:1092px;padding:0 24px}
+  .nav-pill{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--white);border:var(--b);border-radius:999px;padding:8px 10px 8px 20px;box-shadow:4px 4px 0 var(--ink)}
+  .brand{font-family:var(--display);font-weight:800;font-size:1.1rem;display:flex;align-items:center;gap:9px}
+  .logo{width:26px;height:26px;border-radius:8px;background:var(--violet);display:grid;place-items:center;border:2px solid var(--ink)}
+  .links{display:flex;gap:2px}
+  .links a{font-weight:600;font-size:0.92rem;padding:8px 14px;border-radius:999px;transition:background .15s}
+  .links a:hover{background:var(--cream)}
+  .links a.active{background:var(--yellow)}
+  .nav-r{display:flex;align-items:center;gap:8px}
+  .menu-btn{display:none;width:40px;height:40px;border-radius:50%;border:var(--b);background:var(--yellow);cursor:pointer;place-items:center}
+  .menu-btn svg{width:18px;height:18px;stroke:var(--ink);fill:none;stroke-width:2.4;stroke-linecap:round}
+
+  /* ---------- Buttons ---------- */
+  .btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--body);font-weight:700;font-size:0.95rem;padding:13px 24px;border-radius:999px;border:var(--b);cursor:pointer;transition:transform .15s,box-shadow .15s,background .15s;white-space:nowrap;box-shadow:4px 4px 0 var(--ink)}
+  .btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+  .btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+  .btn-violet{background:var(--violet);color:var(--white)}
+  .btn-yellow{background:var(--yellow)}
+  .btn-white{background:var(--white)}
+  .btn-sm{font-size:0.82rem;padding:9px 16px;box-shadow:3px 3px 0 var(--ink)}
+  .btn-sm:hover{box-shadow:5px 5px 0 var(--ink)}
+  .btn-flat{box-shadow:none;padding:10px 18px;font-size:0.85rem}
+  .btn-flat:hover{box-shadow:3px 3px 0 var(--ink)}
+
+  /* ---------- Hero ---------- */
+  .hero{padding:56px 0 24px;position:relative}
+  .blob{position:absolute;border-radius:50%;z-index:0;pointer-events:none}
+  .b1{width:300px;height:300px;background:var(--pink);right:-90px;top:20px;opacity:.55;animation:drift 9s ease-in-out infinite}
+  .b2{width:150px;height:150px;background:var(--mint);left:-50px;top:420px;opacity:.55;animation:drift 11s ease-in-out infinite reverse}
+  @keyframes drift{50%{transform:translate(18px,-22px) scale(1.06)}}
+  .hero-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:56px;align-items:center;position:relative;z-index:1}
+  .pill{display:inline-flex;align-items:center;gap:9px;background:var(--white);border:var(--b);border-radius:999px;padding:7px 16px;font-weight:600;font-size:0.88rem;box-shadow:3px 3px 0 var(--ink)}
+  .pill i{width:10px;height:10px;border-radius:50%;background:var(--mint);border:2px solid var(--ink)}
+  h1{font-size:clamp(3rem,7.4vw,5.6rem);margin:26px 0 22px}
+  .mark{position:relative;white-space:nowrap;z-index:0;padding:0 4px}
+  .mark::before{content:"";position:absolute;left:0;right:0;bottom:4%;height:42%;background:var(--yellow);z-index:-1;border-radius:6px;transform:rotate(-1.2deg);transform-origin:left}
+  .mark.v::before{background:var(--mint)}
+  .lead{font-size:1.2rem;color:var(--muted);max-width:50ch}
+  .cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:32px}
+  .social{display:flex;gap:10px;margin-top:28px}
+  .soc{width:44px;height:44px;border-radius:50%;border:var(--b);background:var(--white);display:grid;place-items:center;transition:transform .15s,background .15s}
+  .soc:hover{transform:translateY(-3px) rotate(-6deg);background:var(--yellow)}
+  .soc svg{width:19px;height:19px;stroke:var(--ink);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+  .portrait{position:relative;max-width:380px;margin-inline:auto;width:100%}
+  .arch-bg{position:absolute;inset:18px -18px -18px 18px;background:var(--violet);border:var(--b);border-radius:190px 190px 28px 28px}
+  .arch{position:relative;aspect-ratio:4/5;border-radius:190px 190px 28px 28px;overflow:hidden;border:var(--b);background:var(--yellow)}
+  .arch img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 18%}
+  .arch .ph{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:5.5rem;color:var(--ink)}
+  .sticker{position:absolute;font-family:var(--display);font-weight:800;font-size:0.9rem;border:var(--b);border-radius:999px;padding:9px 16px;box-shadow:3px 3px 0 var(--ink);white-space:nowrap}
+  .st1{background:var(--coral);color:var(--white);left:-34px;bottom:70px;transform:rotate(-7deg);animation:wob 4.5s ease-in-out infinite}
+  .st2{background:var(--mint);right:-26px;top:50px;transform:rotate(6deg);animation:wob 5.5s ease-in-out infinite reverse}
+  @keyframes wob{50%{transform:translateY(-8px) rotate(var(--r2,-3deg))}}
+  .st1{--r2:-3deg}.st2{--r2:2deg}
+
+  /* ---------- Stat tiles ---------- */
+  .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:64px;position:relative;z-index:1}
+  .tile{border:var(--b);border-radius:var(--r);padding:20px 22px;box-shadow:var(--shadow);transition:transform .2s}
+  .tile:hover{transform:translateY(-5px) rotate(-1deg)}
+  .t1{background:var(--yellow)}.t2{background:var(--mint)}.t3{background:var(--pink)}.t4{background:var(--white)}
+  .tile-k{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;opacity:.75}
+  .tile-v{font-family:var(--display);font-weight:800;font-size:1.55rem;margin-top:6px;letter-spacing:-0.02em;line-height:1.1}
+
+  /* ---------- Marquee ---------- */
+  .marquee{background:var(--ink);color:var(--cream);overflow:hidden;margin-top:72px;padding:18px 0;border-block:var(--b);transform:rotate(-1.2deg);width:104%;margin-left:-2%}
+  .track{display:flex;gap:40px;width:max-content;animation:scroll 32s linear infinite;font-family:var(--display);font-weight:700;font-size:1.3rem;white-space:nowrap}
+  .track span{display:flex;align-items:center;gap:40px}
+  .track span::after{content:"✦";color:var(--yellow);font-size:1rem}
+  .track span:nth-child(3n+2)::after{color:var(--mint)}
+  .track span:nth-child(3n)::after{color:var(--coral)}
+  @keyframes scroll{to{transform:translateX(-50%)}}
+
+  /* ---------- Sections ---------- */
+  section{padding:96px 0 40px;scroll-margin-top:70px}
+  .s-tag{display:inline-block;font-family:var(--mono);font-size:0.76rem;letter-spacing:0.06em;text-transform:uppercase;background:var(--ink);color:var(--yellow);padding:6px 14px;border-radius:999px;margin-bottom:16px}
+  .s-title{font-size:clamp(2.2rem,5vw,3.6rem)}
+  .s-sub{color:var(--muted);max-width:58ch;margin-top:14px;font-size:1.08rem}
+  .s-head{margin-bottom:40px}
+
+  /* ---------- Projects (bento) ---------- */
+  .filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:26px}
+  .filter{font-weight:600;font-size:0.9rem;padding:9px 18px;border-radius:999px;border:var(--b);background:var(--white);cursor:pointer;transition:transform .15s,background .15s}
+  .filter:hover{transform:translateY(-2px)}
+  .filter.on{background:var(--violet);color:var(--white)}
+  .bento{display:grid;grid-template-columns:repeat(6,1fr);gap:20px}
+  .proj{border:var(--b);border-radius:28px;padding:30px;box-shadow:var(--shadow);display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden}
+  .proj:hover{transform:translate(-3px,-3px);box-shadow:8px 8px 0 var(--ink)}
+  .proj.hide{display:none}
+  .p1{grid-column:span 6;background:var(--violet);color:var(--white);display:grid;grid-template-columns:1.1fr 0.9fr;gap:36px;align-items:center}
+  .p2{grid-column:span 3;background:var(--coral);color:var(--white)}
+  .p3{grid-column:span 3;background:var(--yellow)}
+  .p4{grid-column:span 6;background:var(--mint);display:grid;grid-template-columns:1.1fr 0.9fr;gap:36px;align-items:center}
+  .tag{display:inline-block;font-family:var(--mono);font-size:0.7rem;letter-spacing:0.05em;text-transform:uppercase;background:var(--ink);color:var(--cream);padding:5px 12px;border-radius:999px;margin-bottom:14px;align-self:flex-start}
+  .proj h3{font-size:clamp(1.5rem,2.6vw,2.1rem);margin-bottom:12px}
+  .proj p{opacity:.92;max-width:52ch}
+  .p2 p,.p1 p{opacity:.95}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}
+  .chip{font-weight:600;font-size:0.78rem;border:2px solid currentColor;border-radius:999px;padding:3px 11px}
+  .kpi{font-family:var(--display);font-weight:800;font-size:3.6rem;line-height:1;letter-spacing:-0.04em;margin-top:20px}
+  .kpi small{display:block;font-family:var(--body);font-weight:600;font-size:0.82rem;letter-spacing:0;margin-top:6px;opacity:.85}
+  .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+  .proj .push{margin-top:auto}
+  /* viz panels */
+  .viz{background:var(--white);color:var(--ink);border:var(--b);border-radius:20px;padding:20px 22px}
+  .viz-k{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.05em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:flex;justify-content:space-between}
+  .bar-row{display:grid;grid-template-columns:44px 1fr 38px;gap:10px;align-items:center;font-weight:700;font-size:0.86rem;margin-bottom:10px}
+  .bar{height:14px;background:var(--cream);border:2px solid var(--ink);border-radius:99px;overflow:hidden}
+  .bar i{display:block;height:100%;width:0;border-right:2px solid var(--ink);transition:width 1.2s cubic-bezier(.22,.61,.36,1)}
+  .bar-row:nth-child(2) i{background:var(--violet)}
+  .bar-row:nth-child(3) i{background:var(--coral)}
+  .bar-row:nth-child(4) i{background:var(--yellow)}
+  .spline{width:100%;height:auto}
+  .spline path.curve{fill:none;stroke:var(--violet);stroke-width:4;stroke-linecap:round;stroke-dasharray:600;stroke-dashoffset:600;transition:stroke-dashoffset 2s ease .2s}
+  .spline.go path.curve{stroke-dashoffset:0}
+  .spline circle{fill:var(--coral);stroke:var(--ink);stroke-width:2.5}
+
+  /* ---------- Demo ---------- */
+  .demo{display:grid;grid-template-columns:0.8fr 1.2fr;gap:48px;align-items:center}
+  .plot-card{background:var(--white);border:var(--b);border-radius:28px;padding:20px;box-shadow:var(--shadow)}
+  .card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px}
+  .card-title{font-family:var(--mono);font-size:0.74rem;font-weight:500}
+  .tools{display:flex;gap:8px}
+  #plot{width:100%;height:auto;cursor:crosshair;border-radius:16px;background:var(--cream);border:2px solid var(--ink)}
+  .axis{stroke:var(--ink);stroke-width:2}
+  .gridline{stroke:rgba(27,19,64,.15);stroke-width:1;stroke-dasharray:4 5}
+  #fit{stroke:var(--violet);stroke-width:4;stroke-linecap:round;fill:none}
+  .pt{fill:var(--coral);stroke:var(--ink);stroke-width:2;animation:pop .35s cubic-bezier(.34,1.56,.64,1);transform-box:fill-box;transform-origin:center}
+  .pt.hot{fill:var(--yellow)}
+  @keyframes pop{from{transform:scale(0)}}
+  .readout{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+  .readout div{font-family:var(--mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em;border:2px solid var(--ink);border-radius:14px;padding:10px 12px}
+  .readout div:nth-child(1){background:var(--mint)}
+  .readout div:nth-child(2){background:var(--yellow)}
+  .readout div:nth-child(3){background:var(--pink)}
+  .readout b{display:block;font-family:var(--display);font-size:1.5rem;font-weight:800;letter-spacing:-0.02em;text-transform:none;margin-top:2px}
+  .hint{font-size:0.82rem;color:var(--muted);margin-top:12px}
+
+  /* ---------- About ---------- */
+  .about{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+  .box{border:var(--b);border-radius:28px;padding:32px;box-shadow:var(--shadow)}
+  .box.bio{background:var(--white)}
+  .box.bio p{color:var(--muted);margin-top:16px}
+  .edu{margin-top:24px;background:var(--yellow);border:var(--b);border-radius:18px;padding:16px 20px}
+  .edu .k{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.06em;text-transform:uppercase;opacity:.75}
+  .edu b{display:block;font-family:var(--display);font-size:1.25rem;font-weight:800;margin-top:2px}
+  .edu span{font-size:0.92rem}
+  .box.skills{background:var(--pink)}
+  .sk{margin-top:20px}
+  .sk:first-of-type{margin-top:18px}
+  .sk .k{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:9px}
+  .sk-chips{display:flex;flex-wrap:wrap;gap:8px}
+  .sk-chip{font-weight:600;font-size:0.9rem;background:var(--white);border:2px solid var(--ink);border-radius:999px;padding:6px 14px;transition:transform .15s,background .15s}
+  .sk-chip:hover{transform:translateY(-3px) rotate(-2deg);background:var(--yellow)}
+
+  /* ---------- Contact ---------- */
+  .contact{background:var(--violet);color:var(--white);border:var(--b);border-radius:36px;box-shadow:var(--shadow);padding:56px 48px;position:relative;overflow:hidden}
+  .contact .blob.c1{width:220px;height:220px;background:var(--coral);right:-60px;top:-70px;opacity:.9}
+  .contact .blob.c2{width:120px;height:120px;background:var(--yellow);right:140px;bottom:-50px;opacity:.9}
+  .contact h2{font-size:clamp(2.4rem,6vw,4.4rem);max-width:12ch;position:relative}
+  .contact p{max-width:46ch;margin-top:16px;font-size:1.1rem;opacity:.95;position:relative}
+  .mail{display:inline-block;font-family:var(--display);font-weight:800;font-size:clamp(1.2rem,3vw,1.9rem);margin-top:26px;background:var(--yellow);color:var(--ink);border:var(--b);border-radius:999px;padding:14px 26px;box-shadow:4px 4px 0 var(--ink);cursor:pointer;position:relative;transition:transform .15s,box-shadow .15s;word-break:break-all}
+  .mail:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+  .c-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px;position:relative}
+  .c-links a{font-weight:600;font-size:0.95rem;background:var(--white);color:var(--ink);border:var(--b);border-radius:999px;padding:9px 18px;transition:background .15s,transform .15s}
+  .c-links a:hover{background:var(--mint);transform:translateY(-3px)}
+
+  footer{padding:44px 0 36px}
+  .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-weight:500;font-size:0.9rem;color:var(--muted)}
+  .foot div{display:flex;gap:18px}
+  .foot a:hover{color:var(--violet);text-decoration:underline}
+
+  .toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,24px);background:var(--ink);color:var(--yellow);font-weight:600;font-size:0.9rem;padding:12px 20px;border-radius:999px;border:2px solid var(--ink);opacity:0;pointer-events:none;transition:all .25s;z-index:100}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+
+  /* ---------- Reveal ---------- */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:900px){
+    .hero-grid{grid-template-columns:1fr;gap:56px}
+    .portrait{max-width:300px}
+    .tiles{grid-template-columns:repeat(2,1fr)}
+    .p1,.p4{grid-template-columns:1fr;gap:24px}
+    .p2,.p3{grid-column:span 6}
+    .demo,.about{grid-template-columns:1fr;gap:32px}
+  }
+  @media (max-width:720px){
+    body{font-size:16px}
+    .menu-btn{display:grid}
+    .links{position:absolute;top:calc(100% + 12px);left:24px;right:24px;flex-direction:column;background:var(--white);border:var(--b);border-radius:24px;padding:10px;box-shadow:var(--shadow);display:none}
+    .links.open{display:flex}
+    .nav-cv{display:none}
+    section{padding:72px 0 28px}
+    .contact{padding:40px 26px}
+    .proj{padding:24px}
+    .st1{left:-8px}.st2{right:-6px}
+    .marquee{margin-top:56px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation:none!important;transition-duration:.001ms!important}
+    .reveal{opacity:1;transform:none}
+    .spline path.curve{stroke-dashoffset:0}
+  }
+</style>
+</head>
+<body>
+
+<div class="nav" id="top">
+  <div class="nav-pill">
+    <a href="#top" class="brand" aria-label="Sreyhong Heng, home">
+      <span class="logo"><svg width="14" height="14" viewBox="0 0 32 32"><g fill="#FFD23F"><rect x="5" y="17" width="6" height="10" rx="1.5"/><rect x="13" y="11" width="6" height="16" rx="1.5"/><rect x="21" y="5" width="6" height="22" rx="1.5"/></g></svg></span>
+      Sreyhong
+    </a>
+    <nav class="links" id="links" aria-label="Primary">
+      <a href="#work">Projects</a>
+      <a href="#demo">Demo</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="nav-r">
+      <a class="btn btn-violet btn-sm nav-cv" href="Heng_Sreyhong_CV_Data.pdf" download>Download CV</a>
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
+  </div>
+</div>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" style="padding-top:56px">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <span class="pill"><i></i>Open to data &amp; ML internships</span>
+          <h1>Hi, I&rsquo;m <span class="mark">Sreyhong</span> &mdash; I turn <span class="mark v">data</span> into models.</h1>
+          <p class="lead">Fourth-year Applied Mathematics &amp; Statistics student at the Institute of Technology of Cambodia. I build models that predict, classify and forecast &mdash; then test them until the results are honest.</p>
+          <div class="cta">
+            <a href="#work" class="btn btn-violet">See my projects &darr;</a>
+            <a href="Heng_Sreyhong_CV_Data.pdf" class="btn btn-yellow" download>Download CV</a>
+          </div>
+          <div class="social">
+            <a class="soc" href="https://github.com/hong86097" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a>
+            <a class="soc" href="https://www.linkedin.com/in/heng-sreyhong-508587370/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></svg></a>
+            <a class="soc" href="mailto:hong86097@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></a>
+          </div>
+        </div>
+        <figure class="portrait">
+          <div class="arch-bg"></div>
+          <div class="arch">
+            <div class="ph" aria-hidden="true">SH</div>
+            <img src="photo_2026-10-18_20-57-46.jpg" alt="Portrait of Sreyhong Heng" width="800" height="100" onerror="this.remove()">
+          </div>
+          <span class="sticker st1">Applied Math &amp; Stats</span>
+          <span class="sticker st2">ITC &middot; Year 4</span>
+        </figure>
+      </div>
+
+      <div class="tiles">
+        <div class="tile t1 reveal"><div class="tile-k">Education</div><div class="tile-v">B.Eng., ITC</div></div>
+        <div class="tile t2 reveal"><div class="tile-k">Major</div><div class="tile-v">Applied Math &amp; Stats</div></div>
+        <div class="tile t3 reveal"><div class="tile-k">Year</div><div class="tile-v">Fourth year</div></div>
+        <div class="tile t4 reveal"><div class="tile-k">Based in</div><div class="tile-v">Phnom Penh</div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="track">
+      <span>Python</span><span>SQL</span><span>scikit-learn</span><span>PyTorch</span><span>pandas</span><span>NumPy</span><span>Matplotlib</span><span>Streamlit</span><span>Regression</span><span>Classification</span><span>Statistics</span><span>Numerical Methods</span>
+      <span>Python</span><span>SQL</span><span>scikit-learn</span><span>PyTorch</span><span>pandas</span><span>NumPy</span><span>Matplotlib</span><span>Streamlit</span><span>Regression</span><span>Classification</span><span>Statistics</span><span>Numerical Methods</span>
+    </div>
+  </div>
+
+  <!-- PROJECTS -->
+  <section id="work">
+    <div class="wrap">
+      <div class="s-head reveal">
+        <span class="s-tag">Selected work</span>
+        <h2 class="s-title">Things I&rsquo;ve built</h2>
+        <p class="s-sub">Statistics, machine learning and the numerical methods underneath them &mdash; each built end to end, from notebook to something you can run.</p>
+      </div>
+
+      <div class="filters reveal" id="filters">
+        <button class="filter on" data-f="all">All</button>
+        <button class="filter" data-f="ml">Machine learning</button>
+        <button class="filter" data-f="stats">Statistics &amp; forecasting</button>
+        <button class="filter" data-f="num">Numerical methods</button>
+      </div>
+
+      <div class="bento" id="projects">
+        <article class="proj p1 reveal" data-cat="ml">
+          <div>
+            <span class="tag">Deep learning</span>
+            <h3>Neural Showdown: Cat / Dog / Other</h3>
+            <p>An image classifier built on a three-layer fully-connected network, wired up largely from scratch. A Streamlit app shows the model&rsquo;s class confidence live as each image is scored.</p>
+            <div class="chips"><span class="chip">PyTorch</span><span class="chip">NumPy</span><span class="chip">Streamlit</span><span class="chip">128&times;128 input</span><span class="chip">3 classes</span></div>
+            <div class="actions">
+              <a class="btn btn-yellow btn-sm" style="color:var(--ink)" href="https://catanddog12.streamlit.app/" target="_blank" rel="noopener">Live demo &nearr;</a>
+              <a class="btn btn-white btn-sm" style="color:var(--ink)" href="https://github.com/hong86097-afk/CatandDog" target="_blank" rel="noopener">View code</a>
+            </div>
+          </div>
+          <div class="viz" id="tug" aria-hidden="true">
+            <div class="viz-k"><span>Confidence tug-of-war</span><span>illustrative</span></div>
+            <div class="bar-row"><span>cat</span><div class="bar"><i data-w="64"></i></div><span>64%</span></div>
+            <div class="bar-row"><span>dog</span><div class="bar"><i data-w="27"></i></div><span>27%</span></div>
+            <div class="bar-row"><span>other</span><div class="bar"><i data-w="9"></i></div><span>9%</span></div>
+          </div>
+        </article>
+
+        <article class="proj p2 reveal" data-cat="ml stats">
+          <span class="tag">Machine learning</span>
+          <h3>Customer Churn Prediction</h3>
+          <p>A logistic-regression model trained on telecom customer data to flag who is likely to churn, and to surface the factors driving that decision.</p>
+          <div class="chips"><span class="chip">Python</span><span class="chip">scikit-learn</span><span class="chip">pandas</span><span class="chip">Streamlit</span></div>
+          <div class="kpi">0.81<small>model accuracy</small></div>
+          <div class="actions push">
+            <a class="btn btn-yellow btn-sm" style="color:var(--ink)" href="https://shop11-r9gzriudd8h2pxmqiqdftg.streamlit.app/" target="_blank" rel="noopener">Live demo &nearr;</a>
+            <a class="btn btn-white btn-sm" style="color:var(--ink)" href="https://github.com/hong86097-afk/shop11" target="_blank" rel="noopener">View code</a>
+          </div>
+        </article>
+
+        <article class="proj p3 reveal" data-cat="stats">
+          <span class="tag">Forecasting</span>
+          <h3>Cambodia Import / Export Forecasting</h3>
+          <p>A regression model that predicts Cambodia&rsquo;s import and export flows from historical trade records.</p>
+          <div class="chips"><span class="chip">Python</span><span class="chip">Regression</span><span class="chip">pandas</span></div>
+          <div class="kpi" style="font-size:2.4rem">Regression<small>on historical trade data</small></div>
+        </article>
+
+        <article class="proj p4 reveal" data-cat="num">
+          <div>
+            <span class="tag">Numerical methods</span>
+            <h3>Cubic Spline Interpolation</h3>
+            <p>A cubic-spline engine &mdash; Thomas-algorithm tridiagonal solver with clamped and natural boundary conditions &mdash; tracing a smooth outline through scattered control points, without SciPy.</p>
+            <div class="chips"><span class="chip">Python</span><span class="chip">NumPy</span><span class="chip">Thomas algorithm</span><span class="chip">Clamped &amp; natural</span></div>
+          </div>
+          <div class="viz" aria-hidden="true">
+            <div class="viz-k"><span>Smooth curve through points</span><span>3 segments</span></div>
+            <svg class="spline" id="spline" viewBox="0 0 300 130">
+              <path class="curve" d="M20 100 C 55 20, 90 20, 110 60 S 165 115, 195 65 S 250 15, 280 45"/>
+              <circle cx="20" cy="100" r="6"/><circle cx="110" cy="60" r="6"/><circle cx="195" cy="65" r="6"/><circle cx="280" cy="45" r="6"/>
+            </svg>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEMO -->
+  <section id="demo">
+    <div class="wrap">
+      <div class="demo">
+        <div class="reveal">
+          <span class="s-tag">Try it</span>
+          <h2 class="s-title">Fit a line through the noise</h2>
+          <p class="s-sub">Ordinary least squares running live in your browser. Click to add points and watch the slope and R&sup2; update &mdash; the same idea behind my forecasting work, in miniature.</p>
+        </div>
+        <figure class="plot-card reveal">
+          <div class="card-top">
+            <span class="card-title">y = mx + b</span>
+            <div class="tools"><button class="btn btn-white btn-flat" id="randBtn">Randomize</button><button class="btn btn-white btn-flat" id="resetBtn">Reset</button></div>
+          </div>
+          <svg id="plot" viewBox="0 0 400 290" role="img" aria-label="Interactive scatter plot with a least-squares regression line. Click to add points.">
+            <line class="gridline" x1="40" y1="90" x2="384" y2="90"/>
+            <line class="gridline" x1="40" y1="165" x2="384" y2="165"/>
+            <line class="axis" x1="40" y1="24" x2="40" y2="258"/>
+            <line class="axis" x1="40" y1="258" x2="384" y2="258"/>
+            <path id="fit" d="M40 258 L40 258"/>
+            <g id="pts"></g>
+          </svg>
+          <div class="readout">
+            <div>Slope<b id="rSlope">0.00</b></div>
+            <div>R&sup2;<b id="rR2">0.00</b></div>
+            <div>Points<b id="rN">0</b></div>
+          </div>
+          <p class="hint">Tip: click anywhere on the plot to add a point.</p>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="wrap">
+      <div class="s-head reveal">
+        <span class="s-tag">About</span>
+        <h2 class="s-title">Who&rsquo;s behind the models</h2>
+      </div>
+      <div class="about">
+        <div class="box bio reveal">
+          <h3 style="font-size:1.6rem">Where messy data starts to make sense</h3>
+          <p>I work at the intersection of statistics and machine learning: building models that predict, classify or forecast, then stress-testing them until the results are trustworthy.</p>
+          <p>I care about clean pipelines, readable code, and visuals that make a finding obvious on first look. Right now I&rsquo;m deepening my deep-learning foundations and shipping projects end to end &mdash; from notebook to a deployed app.</p>
+          <div class="edu">
+            <div class="k">Education</div>
+            <b>Institute of Technology of Cambodia</b>
+            <span>Applied Mathematics &amp; Statistics &middot; 4th year</span>
+          </div>
+        </div>
+        <div class="box skills reveal">
+          <h3 style="font-size:1.6rem">Toolkit</h3>
+          <div class="sk"><div class="k">Languages</div><div class="sk-chips"><span class="sk-chip">Python</span><span class="sk-chip">SQL</span></div></div>
+          <div class="sk"><div class="k">ML &amp; statistics</div><div class="sk-chips"><span class="sk-chip">scikit-learn</span><span class="sk-chip">PyTorch</span><span class="sk-chip">Regression</span><span class="sk-chip">Classification</span><span class="sk-chip">Statistics</span></div></div>
+          <div class="sk"><div class="k">Data &amp; visualisation</div><div class="sk-chips"><span class="sk-chip">pandas</span><span class="sk-chip">NumPy</span><span class="sk-chip">Matplotlib</span><span class="sk-chip">Streamlit</span></div></div>
+          <div class="sk"><div class="k">Numerical methods</div><div class="sk-chips"><span class="sk-chip">Interpolation</span><span class="sk-chip">Numerical integration</span><span class="sk-chip">ODE solvers</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="contact reveal">
+        <div class="blob c1"></div><div class="blob c2"></div>
+        <h2>Let&rsquo;s work together.</h2>
+        <p>Open to internships, data and ML projects, and good conversations about modelling.</p>
+        <button class="mail" data-copy="hong86097@gmail.com" type="button" aria-label="Copy email address">hong86097@gmail.com</button>
+        <div class="c-links">
+          <a href="tel:+85595535582">+855 955 355 82</a>
+          <a href="https://github.com/hong86097" target="_blank" rel="noopener">GitHub &nearr;</a>
+          <a href="https://www.linkedin.com/in/heng-sreyhong-508587370/" target="_blank" rel="noopener">LinkedIn &nearr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>&copy; <span id="yr">2026</span> Sreyhong Heng</span>
+    <div>
+      <a href="https://github.com/hong86097-afk" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/heng-sreyhong-508587370/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="#top">Back to top &uarr;</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  const $ = (s,c=document)=>c.querySelector(s);
+  const $$ = (s,c=document)=>[...c.querySelectorAll(s)];
+
+  /* Mobile menu */
+  const menuBtn = $('#menuBtn'), links = $('#links');
+  menuBtn.addEventListener('click', () => {
+    const open = links.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open);
+  });
+  $$('#links a').forEach(a => a.addEventListener('click', () => { links.classList.remove('open'); menuBtn.setAttribute('aria-expanded', false); }));
+  $('#yr').textContent = new Date().getFullYear();
+
+  /* Active nav link */
+  const map = {};
+  $$('#links a').forEach(a => map[a.getAttribute('href').slice(1)] = a);
+  const spy = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting && map[e.target.id]) {
+      Object.values(map).forEach(a => a.classList.remove('active'));
+      map[e.target.id].classList.add('active');
+    }
+  }), {rootMargin:'-45% 0px -50% 0px'});
+  $$('main section[id]').forEach(s => spy.observe(s));
+
+  /* Reveal on scroll */
+  const rio = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); rio.unobserve(e.target); }
+  }), {threshold:0.12});
+  $$('.reveal').forEach(el => rio.observe(el));
+
+  /* Confidence bars + spline draw */
+  const bio = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { $$('i', e.target).forEach(i => i.style.width = i.dataset.w + '%'); bio.unobserve(e.target); }
+  }), {threshold:0.5});
+  bio.observe($('#tug'));
+  const sp = $('#spline');
+  new IntersectionObserver((es, o) => es.forEach(e => {
+    if (e.isIntersecting) { sp.classList.add('go'); o.disconnect(); }
+  }), {threshold:0.5}).observe(sp);
+
+  /* Project filters */
+  $$('#filters .filter').forEach(btn => btn.addEventListener('click', () => {
+    $$('#filters .filter').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    const f = btn.dataset.f;
+    $$('#projects .proj').forEach(p => {
+      const show = f === 'all' || p.dataset.cat.split(' ').includes(f);
+      p.classList.toggle('hide', !show);
+      if (show) p.classList.add('in');
+    });
+  }));
+
+  /* Regression demo */
+  const NS = 'http://www.w3.org/2000/svg';
+  const plot = $('#plot'), g = $('#pts'), fit = $('#fit');
+  const X0 = 40, X1 = 384, Y0 = 258, Y1 = 24;
+  let pts = [];
+  const seed = [[0.06,0.12],[0.16,0.24],[0.24,0.17],[0.34,0.38],[0.45,0.42],[0.54,0.4],[0.65,0.62],[0.76,0.68],[0.86,0.83],[0.94,0.9]];
+  const toPx = p => [X0 + p[0]*(X1-X0), Y0 - p[1]*(Y0-Y1)];
+  function render(){
+    g.innerHTML = '';
+    pts.forEach((p,i) => {
+      const [cx,cy] = toPx(p);
+      const c = document.createElementNS(NS,'circle');
+      c.setAttribute('cx',cx); c.setAttribute('cy',cy); c.setAttribute('r',6.5);
+      c.setAttribute('class','pt' + (i === pts.length-1 ? ' hot' : ''));
+      g.appendChild(c);
+    });
+    const n = pts.length;
+    $('#rN').textContent = n;
+    const blank = () => { fit.setAttribute('d','M40 258 L40 258'); $('#rSlope').textContent='—'; $('#rR2').textContent='—'; };
+    if (n < 2) return blank();
+    let sx=0, sy=0, sxx=0, sxy=0, syy=0;
+    pts.forEach(([x,y]) => { sx+=x; sy+=y; sxx+=x*x; sxy+=x*y; syy+=y*y; });
+    const den = n*sxx - sx*sx;
+    if (Math.abs(den) < 1e-9) return blank();
+    const m = (n*sxy - sx*sy)/den, b = (sy - m*sx)/n;
+    const ssTot = syy - sy*sy/n;
+    const ssRes = pts.reduce((a,[x,y]) => a + (y-(m*x+b))**2, 0);
+    const r2 = ssTot > 1e-9 ? Math.max(0, 1 - ssRes/ssTot) : 1;
+    const clamp = v => Math.min(1.05, Math.max(-0.05, v));
+    const a = toPx([0, clamp(b)]), z = toPx([1, clamp(m+b)]);
+    fit.setAttribute('d', `M${a[0].toFixed(1)} ${a[1].toFixed(1)} L${z[0].toFixed(1)} ${z[1].toFixed(1)}`);
+    $('#rSlope').textContent = m.toFixed(2);
+    $('#rR2').textContent = r2.toFixed(2);
+  }
+  plot.addEventListener('click', e => {
+    const r = plot.getBoundingClientRect();
+    const sx = (e.clientX - r.left) / r.width * 400, sy = (e.clientY - r.top) / r.height * 290;
+    if (sx < X0 || sx > X1 || sy < Y1 || sy > Y0) return;
+    pts.push([(sx-X0)/(X1-X0), (Y0-sy)/(Y0-Y1)]);
+    if (pts.length > 60) pts.shift();
+    render();
+  });
+  $('#resetBtn').addEventListener('click', () => { pts = seed.map(p => p.slice()); render(); });
+  $('#randBtn').addEventListener('click', () => {
+    const slope = Math.random()*1.6 - 0.5, icpt = Math.random()*0.4 + (slope < 0 ? 0.4 : 0);
+    pts = Array.from({length:14}, () => {
+      const x = Math.random();
+      return [x, Math.min(1, Math.max(0, slope*x + icpt + (Math.random()-0.5)*0.28))];
+    });
+    render();
+  });
+  pts = seed.map(p => p.slice()); render();
+
+  /* Copy email */
+  const toast = $('#toast'); let tt;
+  function say(m){ toast.textContent = m; toast.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => toast.classList.remove('show'), 1800); }
+  $$('[data-copy]').forEach(el => el.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(el.dataset.copy); say('Email copied to clipboard'); }
+    catch(e){ location.href = 'mailto:' + el.dataset.copy; }
+  }));
+})();
+</script>
+</body>
+</html>
